@@ -1,4 +1,4 @@
-package com.vip.nlp;
+package com.vip.nlp.trie;
 
 import java.util.HashMap;
 import java.util.Map;
