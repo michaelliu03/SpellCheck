@@ -2,3 +2,4 @@
 *.impl
 *.iml
 test/*
+data/*
