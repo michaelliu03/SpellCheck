@@ -29,13 +29,7 @@
             <artifactId>junit</artifactId>
             <version>4.10</version>
         </dependency>
-        <!-- 开始：唯品会的分词jar -->
-        <dependency>
-            <groupId>com.vip.nlp</groupId>
-            <artifactId>segmentation</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-        <!-- 结束：唯品会的分词jar -->
+
 
         <!-- 日志开始-->
         <!-- 日志框架API -->
