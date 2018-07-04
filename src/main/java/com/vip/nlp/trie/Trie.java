@@ -4,11 +4,94 @@ package com.vip.nlp.trie;
  * @author michael.liu
  * @Title: Trie
  * @ProjectName SpellCheck
- * @Description: TODO
+ * @Description: Trie Code
  * @date 2018/7/414:21
  */
 
 
 public class Trie<T> {
+    public TrieNode<T> rootNode = new TrieNode<T>();
 
+    public void add(String key, T value) {
+        addNode(rootNode, key, 0, value);
+    }
+
+    public T find(String key) {
+        return findKey(rootNode, key);
+    }
+
+    public T search(String prefix) {
+        char[] ch = prefix.toCharArray();
+        TrieNode<T> node = rootNode;
+        for (int i = 0; i < ch.length; i++) {
+            node = node.getChildren().get(ch[i]);
+            if (node == null) {
+                break;
+            }
+        }
+
+        if (node != null) {
+            return getValuesFromNode(node);
+        }
+
+        return null;
+    }
+
+    private T getValuesFromNode(TrieNode<T> currNode) {
+        if (currNode.isTerminal()) {
+            return (currNode.getNodeValue());
+        }
+
+        return null;
+    }
+
+    private T findKey(TrieNode<T> currNode, String key) {
+        Character c = key.charAt(0);
+        if (currNode.getChildren().containsKey(c)) {
+            TrieNode<T> nextNode = currNode.getChildren().get(c);
+            if (key.length() == 1) {
+                if (nextNode.isTerminal()) {
+                    return nextNode.getNodeValue();
+                }
+            } else {
+                return findKey(nextNode, key.substring(1));
+            }
+        }
+
+        return null;
+    }
+
+    private void addNode(TrieNode<T> currNode, String key, int pos, T value) {
+        Character c = key.charAt(pos);
+        TrieNode<T> nextNode = currNode.getChildren().get(c);
+
+        if (nextNode == null) {
+            nextNode = new TrieNode<T>();
+            nextNode.setNodeKey(c);
+            if (pos < key.length() - 1) {
+                addNode(nextNode, key, pos + 1, value);
+            } else {
+                nextNode.setNodeValue(value);
+                nextNode.setTerminal(true);
+            }
+            currNode.getChildren().put(c, nextNode);
+        } else {
+            if (pos < key.length() - 1) {
+                addNode(nextNode, key, pos + 1, value);
+            } else {
+                nextNode.setNodeValue(value);
+                nextNode.setTerminal(true);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+	    Trie<String> stringTrie = new Trie<String>();
+        stringTrie.add("ham", new String("ham"));
+        stringTrie.add("hammer", new String("hammer"));
+        stringTrie.add("hammock", new String("hammock"));
+        stringTrie.add("ipod", new String("ipod"));
+        stringTrie.add("iphone", new String("iphone"));
+        System.out.println(stringTrie.find("ham"));
+    }
 }
